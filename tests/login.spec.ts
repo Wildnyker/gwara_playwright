@@ -1,12 +1,18 @@
 import {test, expect} from '@playwright/test'
 
-test.beforeAll(async({page})=>{
-    await page.goto('http://localhost:8000/accounts/login/');
+test.beforeEach(async({page})=>{
+    if (await page.getByRole('button', { name: "Поділитися" }).isVisible()) {
+        await page.goto('http://localhost:8000/accounts/logout');
+        await page.goto('http://localhost:8000/accounts/login/')
+    }
+    else {
+        await page.goto('http://localhost:8000/accounts/login/');
+    }
 })
 
 
 test('Valid login', async ({ page }) => {
-    await page.goto('http://localhost:8000/accounts/login/');
+
     await page.getByRole('textbox', { name: 'Ім\'я користувача' }).click();
     await page.getByRole('textbox', { name: 'Ім\'я користувача' }).fill('Tester');
     await page.getByRole('textbox', { name: 'Ім\'я користувача' }).press('Tab');
@@ -17,14 +23,3 @@ test('Valid login', async ({ page }) => {
     await page.locator("#menu-button").click()
     await expect(page.getByText("Tester"), "Name of the logged in user is visible").toBeVisible()
 });
-
-test.afterEach(async({page})=>{
-    if (await page.getByRole('button', { name: "Поділитися" }).isVisible()) {
-        await page.goto('http://localhost:8000/accounts/logout');
-        await page.goto('http://localhost:8000/accounts/login/')
-    }
-    else {
-        await page.goto('http://localhost:8000/accounts/login/');
-    }
-    
-})
