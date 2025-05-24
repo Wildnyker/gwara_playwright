@@ -16,10 +16,27 @@ test.beforeEach(async({page})=>{
 
 test('valid registration', async ({page})=>{
     const registrationPage = new RegistrationPage(page);
-    const validUserName = faker.person.firstName()
-    const validUserPassword = faker.internet.password()
-    await registrationPage.register(validUserName,validUserPassword,validUserPassword)
-    await expect(page, "Redirected to main page after the login").toHaveURL('http://localhost:8000/')
-    await page.locator("#menu-button").click()
-    await expect(page.getByText(validUserName), "Name of the logged in user is visible").toBeVisible()
+    const validUserName = faker.person.firstName();
+    const validUserPassword = faker.internet.password();
+    await registrationPage.register(validUserName,validUserPassword,validUserPassword);
+    await expect(page, "Redirected to main page after the login").toHaveURL('http://localhost:8000/');
+    await page.locator("#menu-button").click();
+    await expect(page.getByText(validUserName), "Name of the logged in user is visible").toBeVisible();
+})
+
+test('short password registration', async ({page})=>{
+    const registrationPage = new RegistrationPage(page);
+    const validUserName = faker.person.firstName();
+    const shortUserPassword = 'par0l';
+    await registrationPage.register(validUserName,shortUserPassword,shortUserPassword);
+    await expect(await registrationPage.getFinalFormErrorText()).toHaveText("* password2 * Пароль надто короткий. Він повинен містити як мінімум 8 символів");
+
+})
+
+test('too known password registration', async({page})=>{
+    const registrationPage = new RegistrationPage(page);
+    const validUserName = faker.person.firstName();
+    const knownPassword = 'abcdefghij';
+    await registrationPage.register(validUserName, knownPassword, knownPassword);
+    await expect(await registrationPage.getFinalFormErrorText()).toHaveText("* password2 * Пароль надто відомий.")
 })

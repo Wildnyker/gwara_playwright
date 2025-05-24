@@ -33,13 +33,14 @@ export class RegistrationPage {
     }
 
     async getFinalFormErrorText(){
-        const formErrorText = await this.page.locator('#usernameForm .error').innerText()
-        return formErrorText.trim()
+        const formErrorText = this.page.locator('#usernameForm .error')
+        return formErrorText
+        //return formErrorText.trim()
     }
 
     async getUserDuplicateErrorText(){
-        const userDuplicateErrorText = await this.page.locator('#usernameError').innerText()
-        return userDuplicateErrorText.trim()
+        const userDuplicateErrorText = await this.page.locator('#usernameError')
+        return userDuplicateErrorText
     }
 
 }

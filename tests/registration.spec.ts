@@ -38,10 +38,10 @@ test('not valid password registration(short)', async ({page})=>{
 
 test('password is too known', async ({page})=>{
     const validUserName = faker.person.firstName()
-    const shortUserPassword = 'abcdefghij'
+    const knownPassword = 'abcdefghij'
     await page.getByPlaceholder('Ім\'я користувача').fill(validUserName);
-    await page.getByPlaceholder('Пароль').nth(0).fill(shortUserPassword);
-    await page.getByPlaceholder('Повторіть пароль').fill(shortUserPassword);
+    await page.getByPlaceholder('Пароль').nth(0).fill(knownPassword);
+    await page.getByPlaceholder('Повторіть пароль').fill(knownPassword);
     await page.getByRole('button', {name:"Зареєструватись"}).click()
     var errorText = await page.locator('#usernameForm .error').innerText()
     var errorText = errorText.trim()
