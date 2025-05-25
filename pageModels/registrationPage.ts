@@ -39,7 +39,7 @@ export class RegistrationPage {
     }
 
     async getUserDuplicateErrorText(){
-        const userDuplicateErrorText = await this.page.locator('#usernameError')
+        const userDuplicateErrorText = this.page.locator('#usernameError')
         return userDuplicateErrorText
     }
 
