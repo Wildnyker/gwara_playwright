@@ -3,11 +3,11 @@ import { LoginPage } from '../pageModels/loginPage'
 
 test.beforeEach(async({page})=>{
     if (await page.getByRole('button', { name: "Поділитися" }).isVisible()) {
-        await page.goto('http://localhost:8000/accounts/logout');
-        await page.goto('http://localhost:8000/accounts/login/')
+        await page.goto('/accounts/logout');
+        await page.goto('/accounts/login/')
     }
     else {
-        await page.goto('http://localhost:8000/accounts/login/');
+        await page.goto('/accounts/login/');
     }
 })
 
