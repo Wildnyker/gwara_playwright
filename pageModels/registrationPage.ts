@@ -25,14 +25,14 @@ export class RegistrationPage {
     }
 
     async register(username:string, password: string, confirmPassword:string){
-        await this.usernameRegField.fill(username)
-        await this.passwordRegField.fill(password)
-        await this.repeatPasswordRegField.fill(confirmPassword)
-        await this.registerButton.click()
+        await this.usernameRegField.fill(username);
+        await this.passwordRegField.fill(password);
+        await this.repeatPasswordRegField.fill(confirmPassword);
+        await this.registerButton.click();
     }
 
     get getFinalFormErrorText(){
-        return this.finalValidationError
+        return this.finalValidationError;
     }
 
 

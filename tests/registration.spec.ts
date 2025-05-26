@@ -1,10 +1,11 @@
 import {test, expect} from '@playwright/test'
 import {faker} from '@faker-js/faker'
 import { RegistrationPage } from '../pageModels/registrationPage'
-import { TESTUSER_1_NAME } from './testData';
+import { TESTUSER_1_NAME, INVALID_SHORT_TEST_PASS } from './testData';
 
 
 test.beforeEach(async({page})=>{
+    //Arrange: Ensure we're on register page while being logged out 
     if (await page.getByRole('button', { name: "Поділитися" }).isVisible()) {
         await page.goto('/accounts/logout');
         await page.goto('/accounts/register')
@@ -16,58 +17,81 @@ test.beforeEach(async({page})=>{
 
 
 test('valid registration', async ({page})=>{
+    //Arrange: prepare page + test data
     const registrationPage = new RegistrationPage(page);
     const validUserName = faker.person.firstName();
     const validUserPassword = faker.internet.password();
 
+    //Act: Register with valid credentials
     await registrationPage.register(validUserName,validUserPassword,validUserPassword);
 
+    //Asserr: Ensure we're redirected to the main page & registered user's name is visible
     await expect(page, "Redirected to main page after the login").toHaveURL('/');
     await page.locator("#menu-button").click();
     await expect(page.getByText(validUserName), "Name of the logged in user is visible").toBeVisible();
 })
 
 test('short password registration', async ({page})=>{
+    // Arrange: Prepare registration page and short password
     const registrationPage = new RegistrationPage(page);
     const validUserName = faker.person.firstName();
-    const shortUserPassword = 'par0l';
 
-    await registrationPage.register(validUserName,shortUserPassword,shortUserPassword);
+    // Act: Try to register with short password
+    await registrationPage.register(validUserName,INVALID_SHORT_TEST_PASS,INVALID_SHORT_TEST_PASS);
+
+    // Assert: Correct error is show
     await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Пароль надто короткий. Він повинен містити як мінімум 8 символів");
 
 })
 
 test('too known password registration', async({page})=>{
+    // Arrange: Prepare registration page and too common password
     const registrationPage = new RegistrationPage(page);
     const validUserName = faker.person.firstName();
     const knownPassword = 'abcdefghij';
 
+    // Act: Try to register with too common password
     await registrationPage.register(validUserName, knownPassword, knownPassword);
+
+    // Assert: Correct error is shown
     await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Пароль надто відомий.");
 })
 
 test('password from integers only registration', async ({page})=>{
+    // Arrange: Prepare registration page and all-numeric password
     const registrationPage = new RegistrationPage(page);
     const validUserName = faker.person.firstName();
     const integersPassword = "00223344551177";
 
+     // Act: Try to register with numbers-only password
     await registrationPage.register(validUserName, integersPassword, integersPassword);
-    await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Цей пароль повністю складається із цифр.")
+
+    // Assert: Correct error is shown
+    await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Цей пароль повністю складається із цифр.");
 })
 
 test('passwords do not match registration', async({page})=>{
+    // Arrange: Prepare registration page and two different passwords
     const registrationPage = new RegistrationPage(page);
     const validUserName = faker.person.firstName();
     const validPassword1 = faker.internet.password();
     const validPassword2 = faker.internet.password();
 
+    // Act: Try to register with passwords that do not match
     await registrationPage.register(validUserName, validPassword1, validPassword2);
+
+    // Assert: Correct error is shown
     await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Паролі не збігаються");
 })
 
 test('existing username registration', async({page})=>{
+    // Arrange: Prepare registration page and a username that already exists
     const registrationPage = new RegistrationPage(page);
     const validPassword = faker.internet.password();
+
+    // Act: Try to register with an existing username
     await registrationPage.register(TESTUSER_1_NAME, validPassword, validPassword);
+
+    // Assert: Correct error is shown
     await expect(await registrationPage.getFinalFormErrorText).toHaveText("* username * Користувач з таким ім'ям вже існує.");
 })
