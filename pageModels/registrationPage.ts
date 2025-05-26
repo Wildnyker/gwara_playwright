@@ -10,9 +10,7 @@ export class RegistrationPage {
     readonly formFinalError: Locator;
     readonly usernameError: Locator;
     readonly menuButton: Locator;
-
-
-
+    readonly finalValidationError:Locator;
 
     constructor(page:Page){
         this.page = page;
@@ -23,6 +21,7 @@ export class RegistrationPage {
         this.formFinalError = page.locator('#usernameForm .error');
         this.usernameError = page.locator('#usernameError');
         this.menuButton = page.locator("#menu-button");
+        this.finalValidationError = this.page.locator('#usernameForm .error')
     }
 
     async register(username:string, password: string, confirmPassword:string){
@@ -32,15 +31,10 @@ export class RegistrationPage {
         await this.registerButton.click()
     }
 
-    async getFinalFormErrorText(){
-        const formErrorText = this.page.locator('#usernameForm .error')
-        return formErrorText
-        //return formErrorText.trim()
+    get getFinalFormErrorText(){
+        return this.finalValidationError
     }
 
-    async getUserDuplicateErrorText(){
-        const userDuplicateErrorText = this.page.locator('#usernameError')
-        return userDuplicateErrorText
-    }
+
 
 }

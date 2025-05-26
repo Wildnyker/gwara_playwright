@@ -5,13 +5,14 @@ export class LoginPage{
     readonly usernameLoginField:Locator;
     readonly passwordLoginField:Locator;
     readonly loginButton:Locator;
+    readonly errorMessage:Locator
 
     constructor(page:Page){
         this.page = page
         this.usernameLoginField = this.page.getByRole('textbox', { name: 'Ім\'я користувача' })
         this.passwordLoginField = this.page.getByRole('textbox', { name: 'Пароль' })
         this.loginButton = this.page.getByRole('button', { name: 'Увійти' })
-
+        this.errorMessage = this.page.locator('.error-message')
         
     }
 
@@ -20,4 +21,11 @@ export class LoginPage{
         await this.passwordLoginField.fill(password)
         await this.loginButton.click()
     }
+
+    get errorMessageLocator(){
+        return this.errorMessage
+    }
+
+    
+
 }
