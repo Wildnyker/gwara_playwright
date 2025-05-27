@@ -1,5 +1,5 @@
 import { test as setup, expect} from '@playwright/test';
-import { VALID_TEST_PASS, TESTUSER_1_NAME } from './testData';
+import { VALID_TEST_PASS, TESTUSER_1_NAME } from '../test data/testData';
 
 const authFile = '.auth/user.json';
 

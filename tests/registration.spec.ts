@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test'
 import {faker} from '@faker-js/faker'
 import { RegistrationPage } from '../pageModels/registrationPage'
-import { TESTUSER_1_NAME, INVALID_SHORT_TEST_PASS } from './testData';
+import { TESTUSER_1_NAME, INVALID_SHORT_TEST_PASS } from './test data/testData';
 
 test.use({ storageState: undefined });
 

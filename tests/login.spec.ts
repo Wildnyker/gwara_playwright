@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test'
 import { LoginPage } from '../pageModels/loginPage'
-import { TESTUSER_1_NAME, VALID_TEST_PASS, INVALID_SHORT_TEST_PASS } from './testData';
+import { TESTUSER_1_NAME, VALID_TEST_PASS, INVALID_SHORT_TEST_PASS } from './test data/testData';
 
 test.use({ storageState: undefined });
 
