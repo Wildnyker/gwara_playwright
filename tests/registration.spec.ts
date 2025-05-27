@@ -3,6 +3,7 @@ import {faker} from '@faker-js/faker'
 import { RegistrationPage } from '../pageModels/registrationPage'
 import { TESTUSER_1_NAME, INVALID_SHORT_TEST_PASS } from './testData';
 
+test.use({ storageState: undefined });
 
 test.beforeEach(async({page})=>{
     //Arrange: Ensure we're on register page while being logged out 

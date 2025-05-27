@@ -2,6 +2,9 @@ import {test, expect} from '@playwright/test'
 import { LoginPage } from '../pageModels/loginPage'
 import { TESTUSER_1_NAME, VALID_TEST_PASS, INVALID_SHORT_TEST_PASS } from './testData';
 
+test.use({ storageState: undefined });
+
+
 test.beforeEach(async({page})=>{
     // Arrange: Ensure we're on the login page and logged out
     if (await page.getByRole('button', { name: "Поділитися" }).isVisible()) {
