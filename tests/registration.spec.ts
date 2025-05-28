@@ -41,7 +41,7 @@ test('short password registration', async ({page})=>{
     await registrationPage.register(validUserName,INVALID_SHORT_TEST_PASS,INVALID_SHORT_TEST_PASS);
 
     // Assert: Correct error is show
-    await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Пароль надто короткий. Він повинен містити як мінімум 8 символів");
+    await expect(await registrationPage.getFinalFormErrorText).toHaveText("Пароль надто короткий. Він повинен містити як мінімум 8 символів");
 
 })
 
@@ -55,7 +55,7 @@ test('too known password registration', async({page})=>{
     await registrationPage.register(validUserName, knownPassword, knownPassword);
 
     // Assert: Correct error is shown
-    await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Пароль надто відомий.");
+    await expect(await registrationPage.getFinalFormErrorText).toHaveText("Пароль надто відомий.");
 })
 
 test('password from integers only registration', async ({page})=>{
@@ -68,7 +68,7 @@ test('password from integers only registration', async ({page})=>{
     await registrationPage.register(validUserName, integersPassword, integersPassword);
 
     // Assert: Correct error is shown
-    await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Цей пароль повністю складається із цифр.");
+    await expect(await registrationPage.getFinalFormErrorText).toHaveText("Цей пароль повністю складається із цифр.");
 })
 
 test('passwords do not match registration', async({page})=>{
@@ -82,7 +82,7 @@ test('passwords do not match registration', async({page})=>{
     await registrationPage.register(validUserName, validPassword1, validPassword2);
 
     // Assert: Correct error is shown
-    await expect(await registrationPage.getFinalFormErrorText).toHaveText("* password2 * Паролі не збігаються");
+    await expect(await registrationPage.getFinalFormErrorText).toHaveText("Паролі не збігаються");
 })
 
 test('existing username registration', async({page})=>{
@@ -94,5 +94,5 @@ test('existing username registration', async({page})=>{
     await registrationPage.register(TESTUSER_1_NAME, validPassword, validPassword);
 
     // Assert: Correct error is shown
-    await expect(await registrationPage.getFinalFormErrorText).toHaveText("* username * Користувач з таким ім'ям вже існує.");
+    await expect(await registrationPage.getFinalFormErrorText).toHaveText("Користувач з таким ім'ям вже існує.");
 })

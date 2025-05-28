@@ -7,8 +7,7 @@ export class RegistrationPage {
     readonly passwordRegField: Locator;
     readonly repeatPasswordRegField: Locator;
     readonly registerButton: Locator;
-    readonly formFinalError: Locator;
-    readonly usernameError: Locator;
+    //readonly formFinalError: Locator;
     readonly menuButton: Locator;
     readonly finalValidationError:Locator;
 
@@ -18,10 +17,9 @@ export class RegistrationPage {
         this.passwordRegField = page.getByPlaceholder('Пароль').nth(0);
         this.repeatPasswordRegField = page.getByPlaceholder('Повторіть пароль');
         this.registerButton = page.getByRole('button', {name:"Зареєструватись"});
-        this.formFinalError = page.locator('#usernameForm .error');
-        this.usernameError = page.locator('#usernameError');
+        //this.formFinalError = page.locator('');
         this.menuButton = page.locator("#menu-button");
-        this.finalValidationError = this.page.locator('#usernameForm .error')
+        this.finalValidationError = this.page.locator('.error-message p')
     }
 
     async register(username:string, password: string, confirmPassword:string){

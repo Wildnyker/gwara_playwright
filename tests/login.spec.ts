@@ -31,7 +31,7 @@ test('Valid login', async ({ page }) => {
     await page.locator("#menu-button").click();
 
     // Assert: User name is visible
-    await expect(page.getByText("Tester"), "Name of the logged in user is visible").toBeVisible();
+    await expect(page.locator('.dropdown-item-text', {hasText:"Tester"}), "Name of the logged in user is visible").toBeVisible();
 });
 
 test('invalid password login', async({page})=>{
