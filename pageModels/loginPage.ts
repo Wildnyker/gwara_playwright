@@ -22,10 +22,6 @@ export class LoginPage{
         await this.loginButton.click();
     }
 
-    get errorMessageLocator(){
-        return this.errorMessage;
-    }
-
     
 
 }

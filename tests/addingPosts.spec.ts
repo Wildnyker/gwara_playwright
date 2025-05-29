@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test'
 import { FeedPage } from '../pageModels/feedPage';
-import { title } from 'process';
+import { PostPage } from '../pageModels/postPage';
 
 test.beforeEach(async({page})=>{
     await page.goto('/')
@@ -10,26 +10,27 @@ test.beforeEach(async({page})=>{
 
 test('Add a valid post with title only', async({page})=>{
     const feedPage = new FeedPage(page);
+    const postPage = new PostPage(page);
     await feedPage.addPost("Test title 1")
-    await expect(page.locator('.entry-title')).toHaveText('Test title 1')
-    await expect(page.getByRole('button', { name: 'Висловитись' })).toBeVisible();
+    await expect(postPage.postTitle, "Title has expected text").toHaveText('Test title 1')
 })
 
 test('Add a valid post with title + body', async({page})=>{
     const feedPage = new FeedPage(page);
+    const postPage = new PostPage(page);
     await feedPage.addPost("Test title 2", undefined, "Test Body")
-    await expect(page.getByRole('button', { name: 'Висловитись' })).toBeVisible();
-    await expect(page.locator('.entry-title')).toHaveText('Test title 2')
-    await expect(page.getByText('Test Body 1')).toBeVisible()
+    await expect(postPage.postTitle, "Title has expected text").toHaveText('Test title 2')
+    await expect(postPage.postBody, "Body has expected text").toHaveText('Test Body')
+ 
 })
 
 
 test('Add a valid post with title + body + image', async({page})=>{
     const feedPage = new FeedPage(page);
+    const postPage = new PostPage(page);
     await feedPage.addPost("Test title 3", "https://clipart-library.com/data_images/320464.png","Test Body 2")
-    await expect(page.locator('.entry-title')).toHaveText('Test title 3')
-    await expect(page.locator('.entry-image')).toBeVisible()
-    await expect(page.locator('.entry-image')).toHaveAttribute('src', 'https://clipart-library.com/data_images/320464.png');
-    await expect(page.getByText('Test Body 2')).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Висловитись' })).toBeVisible();
+    await expect(postPage.postTitle, "Title has expected text").toHaveText('Test title 3')
+    await expect(postPage.postImage, "Image is visible").toBeVisible()
+    await expect(postPage.postImage, "Image has expected src").toHaveAttribute('src', 'https://clipart-library.com/data_images/320464.png');
+    await expect(postPage.postBody,"Body has expected text").toHaveText('Test Body 2')
 })
