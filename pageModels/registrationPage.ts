@@ -29,10 +29,5 @@ export class RegistrationPage {
         await this.registerButton.click();
     }
 
-    get getFinalFormErrorText(){
-        return this.finalValidationError;
-    }
-
-
 
 }

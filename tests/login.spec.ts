@@ -43,7 +43,7 @@ test('invalid password login', async({page})=>{
 
     // Assert: Should remain on the login page and show error message
     await expect(page, "Stayed on login page").toHaveURL('/accounts/login/');
-    await expect(loginPage.errorMessageLocator).toHaveText('Йой, помилка в імені або паролі.');
+    await expect(loginPage.errorMessage).toHaveText('Йой, помилка в імені або паролі.');
 })
 
 test('invalid username login', async({page})=>{
@@ -55,7 +55,7 @@ test('invalid username login', async({page})=>{
 
     // Assert: Should remain on the login page and show error message
     await expect(page, "Stayed on login page").toHaveURL('/accounts/login/')
-    await expect(loginPage.errorMessageLocator).toHaveText('Йой, помилка в імені або паролі.')
+    await expect(loginPage.errorMessage).toHaveText('Йой, помилка в імені або паролі.')
 })
 
 test('no username & password', async({page})=>{
