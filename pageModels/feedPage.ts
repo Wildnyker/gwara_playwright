@@ -5,13 +5,15 @@ export class FeedPage{
     readonly titleField: Locator;
     readonly imageField:Locator;
     readonly postTextField: Locator;
-    readonly shareButton: Locator;
+    readonly postButton: Locator;
+    readonly addPostError: Locator;
     constructor(page:Page){
         this.page = page
-        this.titleField = page.getByRole('textbox', { name: 'Чим хочеш поділитися?' })
-        this.imageField = page.getByPlaceholder('URL зображення')
-        this.postTextField = page.locator('#new-entry-text')
-        this.shareButton = page.getByRole('button', { name: 'Поділитися' })
+        this.titleField = page.getByRole('textbox', { name: 'Чим хочеш поділитися?' });
+        this.imageField = page.getByPlaceholder('URL зображення');
+        this.postTextField = page.locator('#new-entry-text');
+        this.postButton = page.getByRole('button', { name: 'Поділитися' });
+        this.addPostError = page.locator('#new-entry-form-error');
     }
 
     async addPost(title?:string, imageLink?:string, postText?:string){
@@ -27,7 +29,7 @@ export class FeedPage{
             await this.postTextField.fill(postText);
         }
 
-        await this.shareButton.click()
+        await this.postButton.click();
     }
 
 }
