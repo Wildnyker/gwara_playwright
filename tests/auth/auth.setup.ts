@@ -3,7 +3,7 @@ import { VALID_TEST_PASS, TESTUSER_1_NAME } from '../test data/testData';
 
 const authFile = '.auth/user.json';
 
-//auth via UI is done for this project as it is built on Django and it is tricky to get CSRF token 
+//auth via UI is done for this project as it is built on Django and it is tricky to get CSRF token that is attached to request
 setup('Authenticate as Testuser 1', async ({ page }) => {
 
     await page.goto("/accounts/login/");
