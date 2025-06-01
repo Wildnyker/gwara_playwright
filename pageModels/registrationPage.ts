@@ -13,12 +13,11 @@ export class RegistrationPage {
 
     constructor(page:Page){
         this.page = page;
-        this.usernameRegField = page.getByPlaceholder('Ім\'я користувача');
-        this.passwordRegField = page.getByPlaceholder('Пароль').nth(0);
-        this.repeatPasswordRegField = page.getByPlaceholder('Повторіть пароль');
-        this.registerButton = page.getByRole('button', {name:"Зареєструватись"});
-        //this.formFinalError = page.locator('');
-        this.menuButton = page.locator("#menu-button");
+        this.usernameRegField = this.page.getByPlaceholder('Ім\'я користувача');
+        this.passwordRegField = this.page.getByPlaceholder('Пароль').nth(0);
+        this.repeatPasswordRegField = this.page.getByPlaceholder('Повторіть пароль');
+        this.registerButton = this.page.getByRole('button', {name:"Зареєструватись"});
+        this.menuButton = this.page.locator("#menu-button");
         this.finalValidationError = this.page.locator('.error-message p')
     }
 

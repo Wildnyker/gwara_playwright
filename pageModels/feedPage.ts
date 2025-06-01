@@ -7,13 +7,15 @@ export class FeedPage{
     readonly postTextField: Locator;
     readonly postButton: Locator;
     readonly addPostError: Locator;
+    readonly emptyPostsContainer: Locator
     constructor(page:Page){
         this.page = page
-        this.titleField = page.getByRole('textbox', { name: 'Чим хочеш поділитися?' });
-        this.imageField = page.getByPlaceholder('URL зображення');
-        this.postTextField = page.locator('#new-entry-text');
-        this.postButton = page.getByRole('button', { name: 'Поділитися' });
-        this.addPostError = page.locator('#new-entry-form-error');
+        this.titleField = this.page.getByRole('textbox', { name: 'Чим хочеш поділитися?' });
+        this.imageField = this.page.getByPlaceholder('URL зображення');
+        this.postTextField = this.page.locator('#new-entry-text');
+        this.postButton = this.page.getByRole('button', { name: 'Поділитися' });
+        this.addPostError = this.page.locator('#new-entry-form-error');
+        this.emptyPostsContainer = this.page.locator(".entries")
     }
 
     async addPost(title?:string, imageLink?:string, postText?:string){

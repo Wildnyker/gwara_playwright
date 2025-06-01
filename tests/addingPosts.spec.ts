@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { FeedPage } from '../pageModels/feedPage';
 import { PostPage } from '../pageModels/postPage';
+import { assert } from 'console';
 
 test.beforeEach(async ({ page }) => {
     // Arrange: Go to the main feed page and ensure the user is logged in
@@ -9,6 +10,12 @@ test.beforeEach(async ({ page }) => {
 });
 test.describe('Positive cases for adding a post as user', ()=>{
 
+    test('Verify empty state is shown', async ({page})=>{
+        const feedPage = new FeedPage(page);
+        await expect(feedPage.emptyPostsContainer).toHaveText('Жодного допису. ')
+
+    
+    })
     test('Add a valid post with title only', async ({ page }) => {
         // Arrange: Prepare page objects
         const feedPage = new FeedPage(page);
