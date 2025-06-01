@@ -15,10 +15,10 @@ setup('Authenticate as Testuser 1', async ({ page }) => {
     if(currentUrl.includes('/accounts/login')){
         console.log('user not found - register');
         await page.goto('/accounts/register');
-        await page.getByRole('textbox', { name: 'Ім\'я користувача' }).fill(TESTUSER_1_NAME);
-        await page.getByRole('textbox', { name: 'Пароль' }).fill(VALID_TEST_PASS);
-        await page.getByRole('textbox', { name: 'Підтвердження пароля' }).fill(VALID_TEST_PASS);
-        await page.getByRole('button', { name: 'Зареєструватися' }).click();
+        await page.getByPlaceholder('Ім\'я користувача').fill(TESTUSER_1_NAME);
+        await page.getByPlaceholder('Пароль').nth(0).fill(VALID_TEST_PASS);
+        await page.getByPlaceholder('Повторіть пароль').fill(VALID_TEST_PASS);
+        await page.getByRole('button', { name: 'Зареєструватись' }).click();
         
         // Optional: check success or fallback
         await expect(page.getByRole('button', { name: 'Поділитися' }), 'User registered and logged in').toBeVisible();
