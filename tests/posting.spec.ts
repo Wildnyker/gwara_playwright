@@ -93,12 +93,25 @@ test.describe('Post deletion',()=>{
         const postPage = new PostPage(page)
 
         // Act: Open the post, verify it's opened, and perform the deletion steps
-        await feedPage.postFeedTitle('Test title 2').click()
-        await postPage.verifyCorrectPostIsOpened('Test title 2')
+        await feedPage.postFeedTitle('Post title 1').click()
+        await postPage.verifyCorrectPostIsOpened('Post title 1')
         await postPage.clickDeletePostButton()
         await postPage.confirmPostDeletion()
-        
+
         // Assert: Check that the post is no longer visible on the global Feed page
-        await expect(feedPage.postFeedTitle('Test title 2'), 'Check that post is no longer visible on the global Feed page').not.toBeVisible()
+        await expect(feedPage.postFeedTitle('Post title 1'), 'Check that post is no longer visible on the global Feed page').not.toBeVisible()
+    })
+
+    test("delete other user's post", async({page})=>{
+        // Arrange: Set up page objects
+        const feedPage = new FeedPage(page)
+        const postPage = new PostPage(page)
+        
+        // Act: Open the post, verify it's opened
+        await feedPage.postFeedTitle('Post title 2').click()
+        await postPage.verifyCorrectPostIsOpened('Post title 2')
+
+        //Assert: Check that no delete button is visible for the other user's posts
+        await expect(postPage.postDeleteButton, "No delete button is visible for the other user's posts").not.toBeVisible()
     })
 })
