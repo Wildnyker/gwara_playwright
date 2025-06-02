@@ -84,3 +84,21 @@ test.describe('Negative cases for adding a post as user', ()=>{
         await expect(feedPage.addPostError).toHaveText('Некоректне посилання на зображення')
     })
 })
+
+
+test.describe('Post deletion',()=>{
+    test('delete own post', async({page})=>{
+        // Arrange: Set up page objects
+        const feedPage = new FeedPage(page)
+        const postPage = new PostPage(page)
+
+        // Act: Open the post, verify it's opened, and perform the deletion steps
+        await feedPage.postFeedTitle('Test title 2').click()
+        await postPage.verifyCorrectPostIsOpened('Test title 2')
+        await postPage.clickDeletePostButton()
+        await postPage.confirmPostDeletion()
+        
+        // Assert: Check that the post is no longer visible on the global Feed page
+        await expect(feedPage.postFeedTitle('Test title 2'), 'Check that post is no longer visible on the global Feed page').not.toBeVisible()
+    })
+})

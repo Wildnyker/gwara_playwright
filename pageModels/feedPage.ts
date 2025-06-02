@@ -1,4 +1,5 @@
 import {expect,type Locator,type Page} from '@playwright/test'
+import { title } from 'process';
 
 export class FeedPage{
     readonly page: Page;
@@ -7,7 +8,10 @@ export class FeedPage{
     readonly postTextField: Locator;
     readonly postButton: Locator;
     readonly addPostError: Locator;
-    readonly emptyPostsContainer: Locator
+    readonly emptyPostsContainer: Locator;
+    
+
+
     constructor(page:Page){
         this.page = page
         this.titleField = this.page.getByRole('textbox', { name: 'Чим хочеш поділитися?' });
@@ -15,7 +19,7 @@ export class FeedPage{
         this.postTextField = this.page.locator('#new-entry-text');
         this.postButton = this.page.getByRole('button', { name: 'Поділитися' });
         this.addPostError = this.page.locator('#new-entry-form-error');
-        this.emptyPostsContainer = this.page.locator(".entries")
+        this.emptyPostsContainer = this.page.locator(".entries");
     }
 
     async addPost(title?:string, imageLink?:string, postText?:string){
@@ -33,5 +37,13 @@ export class FeedPage{
 
         await this.postButton.click();
     }
+
+    postFeedTitle(title:string):Locator{
+        return this.page.getByRole('link', { name: title });
+    }
+
+
+
+   
 
 }
