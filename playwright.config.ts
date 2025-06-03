@@ -38,18 +38,23 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name:'setup', 
-      testMatch:'auth.setup.ts'
+      name:'populateDb',
+      testMatch:'populateDB.setup.ts'
+    },
+    {
+      name:'authSetup', 
+      testMatch:'auth.setup.ts',
+      dependencies: ['populateDb']
     },
     {
       name: 'chromium',
       use: { 
         ...devices['Desktop Chrome'], 
-        storageState: '.auth/user.json',
+        storageState: '.auth/user1.json',
         screenshot: 'only-on-failure',
         video:'on-first-retry'
       },
-      dependencies: ['setup'],
+      dependencies: ['populateDb','authSetup'],
     },
 
     {
@@ -58,7 +63,7 @@ export default defineConfig({
         ...devices['Desktop Firefox'], 
         storageState: 'playwright/.auth/user.json' 
       },
-      dependencies: ['setup']
+      dependencies: ['authSetup']
     },
 
     {
@@ -67,7 +72,7 @@ export default defineConfig({
         ...devices['Desktop Safari'], 
         storageState: 'playwright/.auth/user.json' 
       },
-      dependencies: ['setup']
+      dependencies: ['authSetup']
     },
 
     /* Test against mobile viewports. */

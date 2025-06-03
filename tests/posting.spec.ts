@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { FeedPage } from '../pageModels/feedPage';
 import { PostPage } from '../pageModels/postPage';
-import { assert } from 'console';
+
 
 test.beforeEach(async ({ page }) => {
     // Arrange: Go to the main feed page and ensure the user is logged in
