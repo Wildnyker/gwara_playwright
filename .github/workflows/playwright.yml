@@ -35,6 +35,16 @@ jobs:
       run: cd app && npm ci || true   # in case there is no package.json in app, don't fail
     - name: Install Django dependencies
       run: cd app && pip install -r requirements.txt
+    - name: Create .env file
+      run: |
+        echo "DATABASE=${{ secrets.DATABASE }}" > app/.env
+        echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> app/.env
+        echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> app/.env
+        echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> app/.env
+        echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> app/.env
+        echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> app/.env
+        echo "FLUSH=${{ secrets.FLUSH }}" >> app/.env
+        echo "FLUSH_CODE=${{ secrets.FLUSH_CODE }}" >> app/.env
     - name: Start app
       run: cd app && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 & sleep 10
     - name: Install Playwright Browsers
