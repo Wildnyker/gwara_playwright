@@ -38,6 +38,7 @@ jobs:
     - name: Create .env file
       run: |
         echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > app/.env
+        echo "SECRET_KEY_FALLBACKS=${{ secrets.SECRET_KEY_FALLBACKS }}" >> app/.env
         echo "DATABASE=${{ secrets.DATABASE }}" >> app/.env
         echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> app/.env
         echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> app/.env
