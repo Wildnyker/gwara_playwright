@@ -26,12 +26,17 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'     # Set this to your Django app's Python version
     - name: Install dependencies
       run: npm ci
     - name: Install app dependencies
-      run: cd app && npm ci
+      run: cd app && npm ci || true   # in case there is no package.json in app, don't fail
+    - name: Install Django dependencies
+      run: cd app && pip install -r requirements.txt
     - name: Start app
-      run: cd app && npm start & sleep 10
+      run: cd app && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 & sleep 10
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
