@@ -37,6 +37,7 @@ jobs:
       run: cd app && pip install -r requirements.txt
     - name: Create .env file
       run: |
+        echo "SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" > app/.env
         echo "DATABASE=${{ secrets.DATABASE }}" > app/.env
         echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> app/.env
         echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> app/.env
