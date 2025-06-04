@@ -43,11 +43,11 @@ jobs:
         node-version: lts/*
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.10'     # Set this to your Django app's Python version
+        python-version: '3.10'
     - name: Install dependencies
       run: npm ci
     - name: Install app dependencies
-      run: cd app && npm ci || true   # in case there is no package.json in app, don't fail
+      run: cd app && npm ci || true 
     - name: Install Django dependencies
       run: cd app && pip install -r requirements.txt
     - name: Create .env file
@@ -57,10 +57,10 @@ jobs:
         echo "DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" >> app/.env
         echo "CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }}" >> app/.env
         echo "DATABASE=${{ secrets.DATABASE }}" >> app/.env
-        echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> app/.env
+        echo "DATABASE_HOST=localhost" >> app/.env
         echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> app/.env
         echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> app/.env
-        echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> app/.env
+        echo "DATABASE_PORT=5432" >> app/.env
         echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> app/.env
         echo "FLUSH=${{ secrets.FLUSH }}" >> app/.env
         echo "FLUSH_CODE=${{ secrets.FLUSH_CODE }}" >> app/.env
