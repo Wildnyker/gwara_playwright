@@ -39,15 +39,21 @@ export default defineConfig({
   projects: [
     {
       name:'populateDb',
-      testMatch:'populateDB.setup.ts'
+      testMatch:'setup/populateDB.setup.ts',
+      teardown:'cleanupDb',
+    },
+    {
+      name: 'cleanupDb',
+      testMatch: 'teardown/global.teardown.ts'
     },
     {
       name:'authSetup', 
-      testMatch:'auth.setup.ts',
+      testMatch:'setup/auth.setup.ts',
       dependencies: ['populateDb']
     },
     {
       name: 'chromium',
+      testMatch: 'tests/**/*.spec.ts',
       use: { 
         ...devices['Desktop Chrome'], 
         storageState: '.auth/user1.json',
