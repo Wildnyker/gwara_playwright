@@ -18,7 +18,7 @@ export class RegistrationPage {
         this.repeatPasswordRegField = this.page.getByPlaceholder('Повторіть пароль');
         this.registerButton = this.page.getByRole('button', {name:"Зареєструватись"});
         this.menuButton = this.page.locator("#menu-button");
-        this.finalValidationError = this.page.locator('.error-message p')
+        this.finalValidationError = this.page.locator('.error-message')
     }
 
     async register(username:string, password: string, confirmPassword:string){

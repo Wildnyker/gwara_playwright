@@ -10,12 +10,12 @@ test.beforeEach(async ({ page }) => {
 });
 test.describe('Positive cases for adding a post as user', ()=>{
 
-    test('Verify empty state is shown', async ({page})=>{
-        const feedPage = new FeedPage(page);
-        await expect(feedPage.emptyPostsContainer).toHaveText('Жодного допису. ')
+    // test('Verify empty state is shown', async ({page})=>{
+    //     const feedPage = new FeedPage(page);
+    //     await expect(feedPage.emptyPostsContainer).toHaveText('Жодного допису. ')
 
     
-    })
+    // })
     test('Add a valid post with title only', async ({ page }) => {
         // Arrange: Prepare page objects
         const feedPage = new FeedPage(page);

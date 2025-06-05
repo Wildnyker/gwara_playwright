@@ -1,5 +1,11 @@
 import { test as setup} from '@playwright/test';
 import { VALID_TEST_PASS, TESTUSER_1_NAME, TESTUSER_2_NAME } from '../test data/testData';
+import fs from 'fs';
+//checks if .auth folder existing & if not creates it
+
+if (!fs.existsSync('.auth')) {
+  fs.mkdirSync('.auth');
+}
 
 const authFile1 = '.auth/user1.json';
 const authFile2 = '.auth/user2.json';

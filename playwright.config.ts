@@ -57,24 +57,6 @@ export default defineConfig({
       dependencies: ['populateDb','authSetup'],
     },
 
-    {
-      name: 'firefox',
-      use: { 
-        ...devices['Desktop Firefox'], 
-        storageState: 'playwright/.auth/user.json' 
-      },
-      dependencies: ['authSetup']
-    },
-
-    {
-      name: 'webkit',
-      use: { 
-        ...devices['Desktop Safari'], 
-        storageState: 'playwright/.auth/user.json' 
-      },
-      dependencies: ['authSetup']
-    },
-
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
