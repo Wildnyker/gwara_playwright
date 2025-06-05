@@ -9,9 +9,7 @@ on:
         description: Which browser to test
         required: true
         options:
-          - firefox
           - chromium
-          - webkit
 
 jobs:
 
