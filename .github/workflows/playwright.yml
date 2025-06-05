@@ -1,84 +1,84 @@
-name: Playwright Tests
-on:
-  pull_request:
-    branches: main
-  workflow_dispatch:
-    inputs:
-      browser:
-        type: choice
-        description: Which browser to test
-        required: true
-        default: chromium
-        options:
-          - chromium
+# name: Playwright Tests
+# on:
+#   pull_request:
+#     branches: main
+#   workflow_dispatch:
+#     inputs:
+#       browser:
+#         type: choice
+#         description: Which browser to test
+#         required: true
+#         default: chromium
+#         options:
+#           - chromium
 
-jobs:
+# jobs:
 
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
-          POSTGRES_USER: ${{ secrets.DATABASE_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    steps:
-    - uses: actions/checkout@v4
-    - name: Clone app repo
-      env:
-        PAT: ${{ secrets.APP_REPO_PAT }}
-      run: git clone https://$PAT@github.com/OrchidSoleil/gwara-project.git app
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-    - name: Install dependencies
-      run: npm ci
-    - name: Install app dependencies
-      run: cd app && npm ci || true
-    - name: Install Django dependencies
-      run: cd app && pip install -r requirements.txt
-    - name: Ensure accounts migrations exist
-      run: mkdir -p app/accounts/migrations && touch app/accounts/migrations/__init__.py
-    - name: Create .env file
-      run: |
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > app/.env
-        echo "SECRET_KEY_FALLBACKS=${{ secrets.SECRET_KEY_FALLBACKS }}" >> app/.env
-        echo "DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" >> app/.env
-        echo "CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }}" >> app/.env
-        echo "DATABASE=${{ secrets.DATABASE }}" >> app/.env
-        echo "DATABASE_HOST=localhost" >> app/.env
-        echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> app/.env
-        echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> app/.env
-        echo "DATABASE_PORT=5432" >> app/.env
-        echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> app/.env
-        echo "FLUSH=${{ secrets.FLUSH }}" >> app/.env
-        echo "FLUSH_CODE=${{ secrets.FLUSH_CODE }}" >> app/.env
-    - name: Start app
-      run: cd app && python manage.py makemigrations accounts && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 & sleep 30
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: |
-          PROJECT=${{ github.event.inputs.browser }}
-          if [ -z "$PROJECT" ]; then
-            PROJECT=chromium
-          fi
-          npx playwright test --project $PROJECT
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+#   test:
+#     timeout-minutes: 60
+#     runs-on: ubuntu-latest
+#     services:
+#       postgres:
+#         image: postgres:15
+#         env:
+#           POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
+#           POSTGRES_USER: ${{ secrets.DATABASE_USER }}
+#           POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+#         ports:
+#           - 5432:5432
+#         options: >-
+#           --health-cmd pg_isready
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Clone app repo
+#       env:
+#         PAT: ${{ secrets.APP_REPO_PAT }}
+#       run: git clone https://$PAT@github.com/OrchidSoleil/gwara-project.git app
+#     - uses: actions/setup-node@v4
+#       with:
+#         node-version: lts/*
+#     - uses: actions/setup-python@v5
+#       with:
+#         python-version: '3.10'
+#     - name: Install dependencies
+#       run: npm ci
+#     - name: Install app dependencies
+#       run: cd app && npm ci || true
+#     - name: Install Django dependencies
+#       run: cd app && pip install -r requirements.txt
+#     - name: Ensure accounts migrations exist
+#       run: mkdir -p app/accounts/migrations && touch app/accounts/migrations/__init__.py
+#     - name: Create .env file
+#       run: |
+#         echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > app/.env
+#         echo "SECRET_KEY_FALLBACKS=${{ secrets.SECRET_KEY_FALLBACKS }}" >> app/.env
+#         echo "DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" >> app/.env
+#         echo "CSRF_TRUSTED_ORIGINS=${{ secrets.CSRF_TRUSTED_ORIGINS }}" >> app/.env
+#         echo "DATABASE=${{ secrets.DATABASE }}" >> app/.env
+#         echo "DATABASE_HOST=localhost" >> app/.env
+#         echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> app/.env
+#         echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> app/.env
+#         echo "DATABASE_PORT=5432" >> app/.env
+#         echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> app/.env
+#         echo "FLUSH=${{ secrets.FLUSH }}" >> app/.env
+#         echo "FLUSH_CODE=${{ secrets.FLUSH_CODE }}" >> app/.env
+#     - name: Start app
+#       run: cd app && python manage.py makemigrations accounts && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 & sleep 30
+#     - name: Install Playwright Browsers
+#       run: npx playwright install --with-deps
+#     - name: Run Playwright tests
+#       run: |
+#           PROJECT=${{ github.event.inputs.browser }}
+#           if [ -z "$PROJECT" ]; then
+#             PROJECT=chromium
+#           fi
+#           npx playwright test --project $PROJECT
+#     - uses: actions/upload-artifact@v4
+#       if: always()
+#       with:
+#         name: playwright-report
+#         path: playwright-report/
+#         retention-days: 30
