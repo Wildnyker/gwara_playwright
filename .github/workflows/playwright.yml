@@ -8,6 +8,7 @@ on:
         type: choice
         description: Which browser to test
         required: true
+        default: chromium
         options:
           - chromium
 
@@ -69,7 +70,12 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test --project ${{ github.event.inputs.browser }}
+      run: |
+          PROJECT=${{ github.event.inputs.browser }}
+          if [ -z "$PROJECT" ]; then
+            PROJECT=chromium
+          fi
+          npx playwright test --project $PROJECT
     - uses: actions/upload-artifact@v4
       if: always()
       with:
