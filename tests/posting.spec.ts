@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { FeedPage } from '../pageModels/feedPage';
 import { PostPage } from '../pageModels/postPage';
+import { CleanupPage } from '../pageModels/cleanupPage';
+import { ToolsPage } from '../pageModels/testingToolsPage';
+import { LoginPage } from '../pageModels/loginPage';
+import {DBDATA} from './test data/testData';
+import {CLEANUPCODE} from "./test data/testData";
+
 
 
 test.beforeEach(async ({ page }) => {
@@ -8,14 +14,12 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('button', { name: "Поділитися" }), "Share button is visible").toBeVisible();
 });
+
+
 test.describe('Positive cases for adding a post as user', ()=>{
+    //test.use({ storageState: './.auth/user1.json' });
 
-    // test('Verify empty state is shown', async ({page})=>{
-    //     const feedPage = new FeedPage(page);
-    //     await expect(feedPage.emptyPostsContainer).toHaveText('Жодного допису. ')
 
-    
-    // })
     test('Add a valid post with title only', async ({ page }) => {
         // Arrange: Prepare page objects
         const feedPage = new FeedPage(page);
@@ -58,6 +62,7 @@ test.describe('Positive cases for adding a post as user', ()=>{
 })
 
 test.describe('Negative cases for adding a post as user', ()=>{
+    test.use({ storageState: '.auth/user1.json' });
     test('Add a post with image + body without title(required)', async ({page})=>{
         // Arrange: Prepare page object
         const feedPage = new FeedPage(page);
@@ -113,5 +118,27 @@ test.describe('Post deletion',()=>{
 
         //Assert: Check that no delete button is visible for the other user's posts
         await expect(postPage.postDeleteButton, "No delete button is visible for the other user's posts").not.toBeVisible()
+    })
+})
+
+test.describe('Feed Empty state',()=>{
+    test('Verify empty state is shown', async ({page})=>{
+        // Arrange: Prepare all necessary page objects for the test
+        const cleanupPage = new CleanupPage(page)
+        const feedPage = new FeedPage(page);
+        const toolsPage = new ToolsPage(page); 
+        const loginPage = new LoginPage(page)
+        // Arrange: Clean the database to ensure the feed is empty 
+        await cleanupPage.cleanData(CLEANUPCODE);
+
+        // Assert: Confirm the UI shows the empty state message (no posts)
+        await expect(feedPage.emptyPostsContainer).toHaveText('Жодного допису. ');
+
+        // Act: Repopulate the database with test data (users/posts)
+        await toolsPage.createData(DBDATA);
+
+        // Act: Log in as Test User 1 & 2 and save the authentication state
+        await loginPage.saveAuthStatesForTestUser1();
+        await loginPage.saveAuthStatesForTestUser2();
     })
 })

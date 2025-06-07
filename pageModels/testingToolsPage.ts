@@ -10,7 +10,7 @@ export class ToolsPage{
        this.submitButton = this.page.getByRole('button', {name:"Заповнити"}) 
     }
     async createData(inputJson:string){
-        //this.dataTextarea.clear()
+        await this.page.goto('/testing-tools')
         await this.dataTextarea.fill(inputJson)
         await this.submitButton.click()
     }

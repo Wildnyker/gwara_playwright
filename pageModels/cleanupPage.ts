@@ -12,6 +12,7 @@ export class CleanupPage{
     }
 
     async cleanData(cleanupCode:string){
+        await this.page.goto('/cleanup')
         await this.clenupCodeField.fill(cleanupCode);
         await this.confirmCleanupButton.click()
     }
