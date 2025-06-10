@@ -3,32 +3,36 @@ import { EditAboutMePage } from "../pageModels/editAboutMePage";
 import { AboutMePage } from "../pageModels/aboutMePage";
 import {TESTUSER_2_NAME} from './test data/testData'
 import { SettingMenuDropdown } from "../pageModels/settingsMenuDropdown";
+import { LONG_ABOUT_ME_TEXT } from "./test data/testData";
+import { TOO_LONG_ABOUT_ME_TEXT } from "./test data/testData";
+
 test.use({ storageState: './.auth/user2.json' });
 
 test.beforeEach(async ({ page }) => {
     // Arrange: Go to the main feed page and ensure the user is logged in
     await page.goto('/');
     await expect(page.getByRole('button', { name: "Поділитися" }), "Share button is visible").toBeVisible();
+
+    // Arrange: Go to the "Edit about me page"
+    const settingsMenuDropdown = new SettingMenuDropdown(page)
+    await settingsMenuDropdown.goToEditAboutMePage()
 });
 
 
-test('verify "about me" empty state', async ({page})=>{
-    //Arrange: prepared POM & got to edit profile page
+test('should display placeholder when "About Me" section is empty', async ({page})=>{
+    //Arrange: prepared POM 
     const editAboutMePage = new EditAboutMePage(page)
-    const settingsMenuDropdown = new SettingMenuDropdown(page)
-    await settingsMenuDropdown.goToEditAboutMePage()
 
     //Assert we are on correct page, edit form is visible and has expected placeholeder for edit textbox
     await expect(page.url).toBe(`accounts/edit-profile/${TESTUSER_2_NAME}`)  
     await expect (editAboutMePage.aboutMePlaceholder).toBeVisible()
 })
 
-test('submit "empty" about me form', async({page})=>{
-    //Arrange: prepared POM & got to edit profile page
+test('should submit empty "About Me" form and show empty state', async({page})=>{
+    //Arrange: prepared POM 
     const editAboutMePage = new EditAboutMePage(page)
     const settingsMenuDropdown = new SettingMenuDropdown(page)
     const aboutMePage = new AboutMePage(page)
-    await settingsMenuDropdown.goToEditAboutMePage()
 
     //Assert we are on the right page & form has expected placeholeder 
     await expect(editAboutMePage.editAboutMePageHeader).toHaveText(`Редагувати сторінку користувача ${TESTUSER_2_NAME}`)
@@ -41,12 +45,10 @@ test('submit "empty" about me form', async({page})=>{
     await expect(aboutMePage.aboutMeDescription).toHaveText("Про мене:")
 })
 
-test('change "empty" about me', async({page})=>{
-    // Arrange: Prepare Page Objects and go to edit profile page
+test('should save and display entered "About Me" text', async({page})=>{
+    // Arrange: Prepare Page Objects 
     const editAboutMePage = new EditAboutMePage(page)
     const aboutMePage = new AboutMePage(page)
-    const settingsMenuDropdown = new SettingMenuDropdown(page)
-    await settingsMenuDropdown.goToEditAboutMePage()
     
     // Act: Fill new "About Me" text and submit
     await editAboutMePage.submitChangesAboutMe("Test description")
@@ -54,4 +56,47 @@ test('change "empty" about me', async({page})=>{
     // Assert: Redirect to user profile and verify description is updated
     await expect(page.url).toBe(`/accuonts/u/${TESTUSER_2_NAME}`)
     await expect(aboutMePage.aboutMeDescription).toHaveText("Про мене: Test description")
+})
+
+
+test('should update existing "About Me" text with new value', async({page})=>{
+    // Arrange: Prepare Page Objects
+    const editAboutMePage = new EditAboutMePage(page)
+    const aboutMePage = new AboutMePage(page)
+
+    await expect(editAboutMePage.aboutMeTextbox).toHaveText('Test description')
+
+    await editAboutMePage.aboutMeTextbox.clear()
+    await editAboutMePage.submitChangesAboutMe("New description")
+
+    await expect(page.url).toBe(`/accuonts/u/${TESTUSER_2_NAME}`)
+    await expect(aboutMePage.aboutMeDescription).toHaveText("Про мене: New description")
+})
+
+test('should correctly save and display max-length "About Me" text', async({page})=>{
+    // Arrange: Prepare Page Objects
+    const editAboutMePage = new EditAboutMePage(page)
+    const aboutMePage = new AboutMePage(page)
+
+    await expect(editAboutMePage.aboutMeTextbox).toHaveText(LONG_ABOUT_ME_TEXT)
+
+    await editAboutMePage.aboutMeTextbox.clear()
+    await editAboutMePage.submitChangesAboutMe("")
+
+    await expect(page.url).toBe(`/accuonts/u/${TESTUSER_2_NAME}`)
+    await expect(aboutMePage.aboutMeDescription).toHaveText(`Про мене: ${LONG_ABOUT_ME_TEXT}`)
+})
+
+test('should truncate and save "About Me" when text exceeds max length', async({page})=>{
+    // Arrange: Prepare Page Objects
+    const editAboutMePage = new EditAboutMePage(page)
+    const aboutMePage = new AboutMePage(page)
+
+    await expect(editAboutMePage.aboutMeTextbox).toHaveText(TOO_LONG_ABOUT_ME_TEXT)
+
+    await editAboutMePage.aboutMeTextbox.clear()
+    await editAboutMePage.submitChangesAboutMe("")
+
+    await expect(page.url).toBe(`/accuonts/u/${TESTUSER_2_NAME}`)
+    await expect(aboutMePage.aboutMeDescription).toHaveText(`Про мене: ${LONG_ABOUT_ME_TEXT}`)
 })
