@@ -8,6 +8,7 @@ export class LoginPage{
     readonly passwordLoginField:Locator;
     readonly loginButton:Locator;
     readonly errorMessage:Locator;
+    
 
     constructor(page:Page){
         this.page = page;

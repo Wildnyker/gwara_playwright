@@ -9,6 +9,7 @@ export class FeedPage{
     readonly postButton: Locator;
     readonly addPostError: Locator;
     readonly emptyPostsContainer: Locator;
+    readonly settingsMenuButton:Locator;
     
 
 
@@ -20,6 +21,7 @@ export class FeedPage{
         this.postButton = this.page.getByRole('button', { name: 'Поділитися' });
         this.addPostError = this.page.locator('#new-entry-form-error');
         this.emptyPostsContainer = this.page.locator(".entries");
+        
     }
 
     async addPost(title?:string, imageLink?:string, postText?:string){
