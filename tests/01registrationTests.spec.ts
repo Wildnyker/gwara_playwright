@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test'
 import {faker} from '@faker-js/faker'
-import { RegistrationPage } from '../pageModels/registrationPage'
+import { PageManager } from '../pageModels/pageManager';
 import { TESTUSER_1_NAME, INVALID_SHORT_TEST_PASS } from './test data/testData';
 
 test.use({ storageState: undefined });
@@ -19,12 +19,12 @@ test.beforeEach(async({page})=>{
 
 test('valid registration', async ({page})=>{
     //Arrange: prepare page + test data
-    const registrationPage = new RegistrationPage(page);
+    const pm = new PageManager(page)
     const validUserName = faker.person.firstName();
     const validUserPassword = faker.internet.password();
 
     //Act: Register with valid credentials
-    await registrationPage.register(validUserName,validUserPassword,validUserPassword);
+    await pm.onRegistrationPage().register(validUserName,validUserPassword,validUserPassword);
 
     //Asserr: Ensure we're redirected to the main page & registered user's name is visible
     await expect(page, "Redirected to main page after the login").toHaveURL('/');
@@ -34,65 +34,65 @@ test('valid registration', async ({page})=>{
 
 test('short password registration', async ({page})=>{
     // Arrange: Prepare registration page and short password
-    const registrationPage = new RegistrationPage(page);
+    const pm = new PageManager(page)
     const validUserName = faker.person.firstName();
 
     // Act: Try to register with short password
-    await registrationPage.register(validUserName,INVALID_SHORT_TEST_PASS,INVALID_SHORT_TEST_PASS);
+    await pm.onRegistrationPage().register(validUserName,INVALID_SHORT_TEST_PASS,INVALID_SHORT_TEST_PASS);
 
     // Assert: Correct error is show
-    await expect(await registrationPage.finalValidationError).toHaveText("Пароль надто короткий. Він повинен містити як мінімум 8 символів");
+    await expect(await pm.onRegistrationPage().finalValidationError).toHaveText("Пароль надто короткий. Він повинен містити як мінімум 8 символів");
 
 })
 
 test('too known password registration', async({page})=>{
     // Arrange: Prepare registration page and too common password
-    const registrationPage = new RegistrationPage(page);
+    const pm = new PageManager(page)
     const validUserName = faker.person.firstName();
     const knownPassword = 'abcdefghij';
 
     // Act: Try to register with too common password
-    await registrationPage.register(validUserName, knownPassword, knownPassword);
+    await pm.onRegistrationPage().register(validUserName, knownPassword, knownPassword);
 
     // Assert: Correct error is shown
-    await expect(await registrationPage.finalValidationError).toHaveText("Пароль надто відомий.");
+    await expect(await pm.onRegistrationPage().finalValidationError).toHaveText("Пароль надто відомий.");
 })
 
 test('password from integers only registration', async ({page})=>{
     // Arrange: Prepare registration page and all-numeric password
-    const registrationPage = new RegistrationPage(page);
+    const pm = new PageManager(page)
     const validUserName = faker.person.firstName();
     const integersPassword = "00223344551177";
 
      // Act: Try to register with numbers-only password
-    await registrationPage.register(validUserName, integersPassword, integersPassword);
+    await pm.onRegistrationPage().register(validUserName, integersPassword, integersPassword);
 
     // Assert: Correct error is shown
-    await expect(await registrationPage.finalValidationError).toHaveText("Цей пароль повністю складається із цифр.");
+    await expect(await pm.onRegistrationPage().finalValidationError).toHaveText("Цей пароль повністю складається із цифр.");
 })
 
 test('passwords do not match registration', async({page})=>{
     // Arrange: Prepare registration page and two different passwords
-    const registrationPage = new RegistrationPage(page);
+    const pm = new PageManager(page)
     const validUserName = faker.person.firstName();
     const validPassword1 = faker.internet.password();
     const validPassword2 = faker.internet.password();
 
     // Act: Try to register with passwords that do not match
-    await registrationPage.register(validUserName, validPassword1, validPassword2);
+    await pm.onRegistrationPage().register(validUserName, validPassword1, validPassword2);
 
     // Assert: Correct error is shown
-    await expect(await registrationPage.finalValidationError).toHaveText("Паролі не збігаються");
+    await expect(await pm.onRegistrationPage().finalValidationError).toHaveText("Паролі не збігаються");
 })
 
 test('existing username registration', async({page})=>{
     // Arrange: Prepare registration page and a username that already exists
-    const registrationPage = new RegistrationPage(page);
+    const pm = new PageManager(page)
     const validPassword = faker.internet.password();
 
     // Act: Try to register with an existing username
-    await registrationPage.register(TESTUSER_1_NAME, validPassword, validPassword);
+    await pm.onRegistrationPage().register(TESTUSER_1_NAME, validPassword, validPassword);
 
     // Assert: Correct error is shown
-    await expect(await registrationPage.finalValidationError).toHaveText("Користувач з таким ім'ям вже існує.");
+    await expect(await pm.onRegistrationPage().finalValidationError).toHaveText("Користувач з таким ім'ям вже існує.");
 })
