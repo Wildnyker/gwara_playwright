@@ -3,6 +3,7 @@ import { title } from 'process';
 
 export class FeedPage{
     readonly page: Page;
+    readonly openPostFormButton:Locator
     readonly titleField: Locator;
     readonly imageField:Locator;
     readonly postTextField: Locator;
@@ -21,10 +22,13 @@ export class FeedPage{
         this.postButton = this.page.getByRole('button', { name: 'Поділитися' });
         this.addPostError = this.page.locator('#new-entry-form-error');
         this.emptyPostsContainer = this.page.locator(".entries");
+        this.openPostFormButton = this.page.locator("[alt='New']")
         
     }
 
     async addPost(title?:string, imageLink?:string, postText?:string){
+        this.openPostFormButton.click()
+
         if(title){
             await this.titleField.fill(title);
         }

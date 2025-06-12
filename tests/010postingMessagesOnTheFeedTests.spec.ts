@@ -11,10 +11,13 @@ import {CLEANUPCODE} from "./test data/testData";
 // import { LoginPage } from '../pageModels/loginPage';
 
 
+
 test.beforeEach(async ({ page }) => {
     // Arrange: Go to the main feed page and ensure the user is logged in
+    const pm = new PageManager(page)
     await page.goto('/');
-    await expect(page.getByRole('button', { name: "Поділитися" }), "Share button is visible").toBeVisible();
+
+    await expect(pm.onFeedPage().openPostFormButton).toBeVisible();
 });
 
 
