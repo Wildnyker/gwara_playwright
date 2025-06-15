@@ -26,6 +26,7 @@ test('Valid login', async ({ page }) => {
 
     // Assert: User is redirected to main page
     await expect(page, "Redirected to main page after the login").toHaveURL('/');
+    await page.context().storageState({ path: './.auth/user1.json' }); 
 
     // Act: Open the menu
     await page.locator("#menu-button").click();
