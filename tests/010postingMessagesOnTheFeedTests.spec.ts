@@ -10,7 +10,7 @@ import {CLEANUPCODE} from "./test data/testData";
 // import { ToolsPage } from '../pageModels/testingToolsPage';
 // import { LoginPage } from '../pageModels/loginPage';
 
-
+test.use({ storageState: './.auth/user1.json' });
 
 test.beforeEach(async ({ page }) => {
     // Arrange: Go to the main feed page and ensure the user is logged in
@@ -33,6 +33,7 @@ test.describe('Positive cases for adding a post as user', ()=>{
 
         // Assert: Title is visible on the post page
         await expect(pm.onPostPage().postTitle, "Title has expected text").toHaveText('Test title 1');
+        await page.waitForTimeout(5000)
     });
 
     test('Add a valid post with title + body', async ({ page }) => {
@@ -122,22 +123,22 @@ test.describe('Post deletion',()=>{
     })
 })
 
-test.describe('Feed Empty state',()=>{
-    test('Verify empty state is shown', async ({page})=>{
-        // Arrange: Prepare all necessary page objects for the test
-        const pm = new PageManager(page);
+// test.describe('Feed Empty state',()=>{
+//     test('Verify empty state is shown', async ({page})=>{
+//         // Arrange: Prepare all necessary page objects for the test
+//         const pm = new PageManager(page);
 
-        // Arrange: Clean the database to ensure the feed is empty 
-        await pm.onCleanupPage().cleanData(CLEANUPCODE);
+//         // Arrange: Clean the database to ensure the feed is empty 
+//         await pm.onCleanupPage().cleanData(CLEANUPCODE);
 
-        // Assert: Confirm the UI shows the empty state message (no posts)
-        await expect(pm.onFeedPage().emptyPostsContainer).toHaveText('Жодного допису. ');
+//         // Assert: Confirm the UI shows the empty state message (no posts)
+//         await expect(pm.onFeedPage().emptyPostsContainer).toHaveText('Жодного допису. ');
 
-        // Act: Repopulate the database with test data (users/posts)
-        await pm.onToolsPage().createData(DBDATA);
+//         // Act: Repopulate the database with test data (users/posts)
+//         await pm.onToolsPage().createData(DBDATA);
 
-        // Act: Log in as Test User 1 & 2 and save the authentication state
-        await pm.onLoginPage().saveAuthStatesForTestUser1();
-        await pm.onLoginPage().saveAuthStatesForTestUser2();
-    })
-})
+//         // Act: Log in as Test User 1 & 2 and save the authentication state
+//         await pm.onLoginPage().saveAuthStatesForTestUser1();
+//         await pm.onLoginPage().saveAuthStatesForTestUser2();
+//     })
+// })

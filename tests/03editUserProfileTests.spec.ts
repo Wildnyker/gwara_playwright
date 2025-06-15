@@ -1,8 +1,5 @@
 import { test, expect } from "@playwright/test";
 import { PageManager } from "../pageModels/pageManager";
-import { EditAboutMePage } from "../pageModels/editAboutMePage";
-import { AboutMePage } from "../pageModels/aboutMePage";
-import { SettingMenuDropdown } from "../pageModels/settingsMenuDropdown";
 import {TESTUSER_2_NAME} from './test data/testData'
 import { LONG_ABOUT_ME_TEXT } from "./test data/testData";
 import { TOO_LONG_ABOUT_ME_TEXT } from "./test data/testData";
