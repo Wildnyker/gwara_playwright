@@ -26,6 +26,8 @@ test('Valid login', async ({ page }) => {
 
     // Assert: User is redirected to main page
     await expect(page, "Redirected to main page after the login").toHaveURL('/');
+
+    //i need user 3 to nod compromise user 1 storage state
     await page.context().storageState({ path: './.auth/user1.json' }); 
 
     // Act: Open the menu
