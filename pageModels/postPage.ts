@@ -10,6 +10,12 @@ export class PostPage{
     readonly postCommentButton:Locator;
     readonly postCommentTextArea:Locator;
     readonly postCommentCounter:Locator;
+    readonly postCommentDropdownMenu:Locator;
+    readonly postCommentEditButton:Locator;
+    readonly postCommentDeleteButton:Locator;
+    readonly commentDeletionPopupTitle:Locator;
+    readonly commentDeletionPopupYes:Locator;
+    readonly commentDeletionPopupNo:Locator;
     readonly firstCommentBody:Locator;
     readonly postEditButton:Locator;
     readonly postDeleteButton:Locator;
@@ -25,7 +31,13 @@ export class PostPage{
         this.postBody = this.page.locator('//p[@class="entry-text"]/following-sibling::p[1]');
         this.postCommentTextArea = this.page.locator('#comment_field');
         this.postCommentButton = this.page.getByRole('button', { name: 'Висловитись' });
-        this.firstCommentBody = this.page.locator('.entry')
+        this.firstCommentBody = this.page.locator('.entry-text').nth(1)
+        this.postCommentDropdownMenu = this.page.locator('#post-comment-menu')
+        this.postCommentDeleteButton = this.page.getByText('Видалити')
+        this.postCommentEditButton = this.page.getByText('Виправити')
+        this.commentDeletionPopupNo = this.page.getByText('No')
+        this.commentDeletionPopupYes = this.page.getByText('Yes')
+        this.commentDeletionPopupTitle = this.page.getByText('Are you sure you want to delete this?')
         this.postCommentCounter = this.page.getByRole('heading', {level:6})
         this.postEditButton = this.page.getByRole('button', {name:'Виправити'});
         this.postDeleteButton = this.page.getByRole('button', {name:'Прибрати'});
@@ -53,5 +65,11 @@ export class PostPage{
     async addComment(commentText:string){
         await this.postCommentTextArea.fill(commentText)      
         await this.postCommentButton.click()
+    }
+
+    async deleteFirstComment(){
+        await this.postCommentDropdownMenu.click()
+        await this.postCommentDeleteButton.click()
+        await this.commentDeletionPopupYes.click()
     }
 }
