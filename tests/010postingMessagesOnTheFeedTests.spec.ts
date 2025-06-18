@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { PageManager } from '../pageModels/pageManager';
-import {DBDATA} from './test data/testData';
-import {CLEANUPCODE} from "./test data/testData";
+import {DBDATA, TESTUSER_1_NAME, TESTUSER_2_NAME, CLEANUPCODE} from './test data/testData';
 
 // No longer needed as page models are brought via page manager
 // import { FeedPage } from '../pageModels/feedPage';
@@ -102,7 +101,7 @@ test.describe('Post deletion',()=>{
 
         // Act: Open the post, verify it's opened, and perform the deletion steps
         await pm.onFeedPage().postFeedTitle('Post title 1').click()
-        await pm.onPostPage().verifyCorrectPostIsOpened('Post title 1')
+        await pm.onPostPage().verifyCorrectPostIsOpened('Post title 1', TESTUSER_1_NAME)
         await pm.onPostPage().clickDeletePostButton()
         await pm.onPostPage().confirmPostDeletion()
 
@@ -116,29 +115,29 @@ test.describe('Post deletion',()=>{
         
         // Act: Open the post, verify it's opened
         await pm.onFeedPage().postFeedTitle('Post title 2').click()
-        await pm.onPostPage().verifyCorrectPostIsOpened('Post title 2')
+        await pm.onPostPage().verifyCorrectPostIsOpened('Post title 2', TESTUSER_2_NAME)
 
         //Assert: Check that no delete button is visible for the other user's posts
         await expect(pm.onPostPage().postDeleteButton, "No delete button is visible for the other user's posts").not.toBeVisible()
     })
 })
 
-// test.describe('Feed Empty state',()=>{
-//     test('Verify empty state is shown', async ({page})=>{
-//         // Arrange: Prepare all necessary page objects for the test
-//         const pm = new PageManager(page);
+test.describe('Feed Empty state',()=>{
+    test('Verify empty state is shown', async ({page})=>{
+        // Arrange: Prepare all necessary page objects for the test
+        const pm = new PageManager(page);
 
-//         // Arrange: Clean the database to ensure the feed is empty 
-//         await pm.onCleanupPage().cleanData(CLEANUPCODE);
+        // Arrange: Clean the database to ensure the feed is empty 
+        await pm.onCleanupPage().cleanData(CLEANUPCODE);
 
-//         // Assert: Confirm the UI shows the empty state message (no posts)
-//         await expect(pm.onFeedPage().emptyPostsContainer).toHaveText('Жодного допису. ');
+        // Assert: Confirm the UI shows the empty state message (no posts)
+        await expect(pm.onFeedPage().emptyPostsContainer).toHaveText('Жодного допису. ');
 
-//         // Act: Repopulate the database with test data (users/posts)
-//         await pm.onToolsPage().createData(DBDATA);
+        // Act: Repopulate the database with test data (users/posts)
+        await pm.onToolsPage().createData(DBDATA);
 
-//         // Act: Log in as Test User 1 & 2 and save the authentication state
-//         await pm.onLoginPage().saveAuthStatesForTestUser1();
-//         await pm.onLoginPage().saveAuthStatesForTestUser2();
-//     })
-// })
+        // Act: Log in as Test User 1 & 2 and save the authentication state
+        await pm.onLoginPage().saveAuthStatesForTestUser1();
+        await pm.onLoginPage().saveAuthStatesForTestUser2();
+    })
+})

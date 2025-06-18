@@ -44,16 +44,17 @@ test.describe('Authenticated user comment tests', ()=>{
     });
 
 
-    test('add empty comment', async({page})=>{
+    test('empty comment is not added; existing comment stays first', async({page})=>{
         //Arrange
         const pm = new PageManager(page)
         await pm.onFeedPage().postFeedTitle("Post title 2").click()
+        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 2", TESTUSER_2_NAME)
         await expect(pm.onPostPage().postAuthor).toHaveText(TESTUSER_2_NAME)
         
         //Act
         await pm.onPostPage().addComment('')
         
-        //Assert
+        //Assert: empty comment is ignored, first existing comment remains unchanged
         await expect(pm.onPostPage().firstCommentBody).toContainText(TEST_COMMENT1)
         await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 1 = ')
     })
@@ -62,7 +63,7 @@ test.describe('Authenticated user comment tests', ()=>{
         //Arrange
         const pm = new PageManager(page)
         await pm.onFeedPage().postFeedTitle("Post title 2").click()
-        await expect(pm.onPostPage().postAuthor).toHaveText(TESTUSER_2_NAME)
+        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 2", TESTUSER_2_NAME)
         
         //Act
         await pm.onPostPage().addComment(MAX_LENGTH_COMMENT)
@@ -76,7 +77,7 @@ test.describe('Authenticated user comment tests', ()=>{
         //Arrange
         const pm = new PageManager(page);
         await pm.onFeedPage().postFeedTitle("Post title 4").click();
-        await expect(pm.onPostPage().postAuthor).toHaveText(TESTUSER_1_NAME);
+        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME)
         
         //Act
         await pm.onPostPage().editFirstComment(TEST_COMMENT2)
@@ -90,7 +91,7 @@ test.describe('Authenticated user comment tests', ()=>{
         //Arrange
         const pm = new PageManager(page);
         await pm.onFeedPage().postFeedTitle("Post title 4").click();
-        await expect(pm.onPostPage().postAuthor).toHaveText(TESTUSER_1_NAME);
+        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME)
         
         //Act
         await pm.onPostPage().deleteFirstComment()
@@ -112,7 +113,7 @@ test.describe('Anonymous user tests', () => {
     const pm = new PageManager(page);
     await page.goto('/');
     await pm.onFeedPage().postFeedTitle('Post title 4').click();
-    await expect(pm.onPostPage().postAuthor).toHaveText(TESTUSER_1_NAME);
+    await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME)
     
     //Act
     await pm.onPostPage().addComment(TEST_COMMENT1);

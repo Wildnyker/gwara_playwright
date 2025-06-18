@@ -51,9 +51,10 @@ export class PostPage{
         this.postDeletedTag = this.page.getByText('//прибрано//')
     }
 
-    async verifyCorrectPostIsOpened(title:string){
+    async verifyCorrectPostIsOpened(title:string, author:string){
         await expect(this.postCommentButton, "Check that post page is opened").toBeVisible()
-        await expect(this.postTitle, 'Check that correct post title is shown').toHaveText(title)                
+        await expect(this.postTitle, 'Check that correct post title is shown').toHaveText(title)
+        await expect(this.postAuthor, 'Check that correct post author is shown').toHaveText(author)                
     }
 
     async clickDeletePostButton(){
