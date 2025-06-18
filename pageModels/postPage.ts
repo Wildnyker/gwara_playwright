@@ -16,6 +16,8 @@ export class PostPage{
     readonly commentDeletionPopupTitle:Locator;
     readonly commentDeletionPopupYes:Locator;
     readonly commentDeletionPopupNo:Locator;
+    readonly commentEditField: Locator;
+    readonly commentEditConfirmButton: Locator;
     readonly firstCommentBody:Locator;
     readonly postEditButton:Locator;
     readonly postDeleteButton:Locator;
@@ -34,10 +36,12 @@ export class PostPage{
         this.firstCommentBody = this.page.locator('.entry-text').nth(1)
         this.postCommentDropdownMenu = this.page.locator('#post-comment-menu')
         this.postCommentDeleteButton = this.page.getByText('Видалити')
-        this.postCommentEditButton = this.page.getByText('Виправити')
+        this.postCommentEditButton = this.page.locator('.dropdown-item.edit-button')
         this.commentDeletionPopupNo = this.page.getByText('No')
         this.commentDeletionPopupYes = this.page.getByText('Yes')
         this.commentDeletionPopupTitle = this.page.getByText('Are you sure you want to delete this?')
+        this.commentEditField = this.page.locator("#edit-field-1")
+        this.commentEditConfirmButton = this.page.getByText("Зберегти")
         this.postCommentCounter = this.page.getByRole('heading', {level:6})
         this.postEditButton = this.page.getByRole('button', {name:'Виправити'});
         this.postDeleteButton = this.page.getByRole('button', {name:'Прибрати'});
@@ -71,5 +75,13 @@ export class PostPage{
         await this.postCommentDropdownMenu.click()
         await this.postCommentDeleteButton.click()
         await this.commentDeletionPopupYes.click()
+    }
+
+    async editFirstComment(changedCommentText:string){
+        await this.postCommentDropdownMenu.click()
+        await this.postCommentEditButton.click()
+        await this.commentEditField.clear()
+        await this.commentEditField.fill(changedCommentText)
+        await this.commentEditConfirmButton.click()
     }
 }

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { PageManager } from '../pageModels/pageManager';
-import { TEST_COMMENT1, TESTUSER_1_NAME, TESTUSER_2_NAME, MAX_LENGTH_COMMENT } from './test data/testData';
+import { TEST_COMMENT1, TEST_COMMENT2, TESTUSER_1_NAME, TESTUSER_2_NAME, MAX_LENGTH_COMMENT } from './test data/testData';
 
 
 test.describe('Authenticated user comment tests', ()=>{
@@ -48,6 +48,16 @@ test.describe('Authenticated user comment tests', ()=>{
         await expect(pm.onPostPage().firstCommentBody).toContainText(MAX_LENGTH_COMMENT)
         await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 2 = ') 
     })
+
+    test('edit own comment ', async ({ page }) => {
+        const pm = new PageManager(page);
+        await pm.onFeedPage().postFeedTitle("Post title 4").click();
+        await expect(pm.onPostPage().postAuthor).toHaveText(TESTUSER_1_NAME);
+        await pm.onPostPage().editFirstComment(TEST_COMMENT2)
+        await expect(pm.onPostPage().firstCommentBody).toContainText(TEST_COMMENT2)
+        await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 1 = ')
+    });
+
     test('delete own comment under own post', async ({ page }) => {
         const pm = new PageManager(page);
         await pm.onFeedPage().postFeedTitle("Post title 4").click();
@@ -81,6 +91,5 @@ test.describe('Anonymous user tests', () => {
 
 
 
-// test('edit own comment ', async ({ page }) => {
-// });
+
 
