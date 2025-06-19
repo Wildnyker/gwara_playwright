@@ -18,7 +18,7 @@ export class SettingMenuDropdown {
     }
 
     async goToEditAboutMePage(){
-        await this.settingsMenuButton.click()
-        await this.editProfleLink.click()
+        await this.settingsMenuButton.click();
+        await this.editProfleLink.click();
     }
 }

@@ -5,14 +5,14 @@ export class ToolsPage{
     readonly dataTextarea:Locator;
     readonly submitButton:Locator;
     constructor(page:Page){
-       this.page = page
-       this.dataTextarea = this.page.getByPlaceholder('Дані у форматі JSON.')
-       this.submitButton = this.page.getByRole('button', {name:"Заповнити"}) 
+       this.page = page;
+       this.dataTextarea = this.page.getByPlaceholder('Дані у форматі JSON.');
+       this.submitButton = this.page.getByRole('button', {name:"Заповнити"});
     }
     async createData(inputJson:string){
-        await this.page.goto('/testing-tools')
-        await this.dataTextarea.fill(inputJson)
-        await this.submitButton.click()
+        await this.page.goto('/testing-tools');
+        await this.dataTextarea.fill(inputJson);
+        await this.submitButton.click();
     }
 }
 

@@ -8,6 +8,6 @@ export class AboutMePage {
     constructor(page:Page){
         this.page = page;
         this.aboutMeHeader =this.page.getByRole('heading',{name:/Сторінка/i});
-        this.aboutMeDescription = this.page.locator('#bio')
+        this.aboutMeDescription = this.page.locator('#bio');
     }
 }

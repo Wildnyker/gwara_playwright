@@ -46,55 +46,55 @@ test.describe('Authenticated user comment tests', ()=>{
 
     test('empty comment is not added; existing comment stays first', async({page})=>{
         //Arrange
-        const pm = new PageManager(page)
-        await pm.onFeedPage().postFeedTitle("Post title 2").click()
-        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 2", TESTUSER_2_NAME)
-        await expect(pm.onPostPage().postAuthor).toHaveText(TESTUSER_2_NAME)
+        const pm = new PageManager(page);
+        await pm.onFeedPage().postFeedTitle("Post title 2").click();
+        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 2", TESTUSER_2_NAME);
+        await expect(pm.onPostPage().postAuthor).toHaveText(TESTUSER_2_NAME);
         
         //Act
         await pm.onPostPage().addComment('')
         
         //Assert: empty comment is ignored, first existing comment remains unchanged
-        await expect(pm.onPostPage().firstCommentBody).toContainText(TEST_COMMENT1)
-        await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 1 = ')
+        await expect(pm.onPostPage().firstCommentBody).toContainText(TEST_COMMENT1);
+        await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 1 = ');
     })
 
     test('add max-length comment', async({page})=>{
         //Arrange
-        const pm = new PageManager(page)
-        await pm.onFeedPage().postFeedTitle("Post title 2").click()
-        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 2", TESTUSER_2_NAME)
+        const pm = new PageManager(page);
+        await pm.onFeedPage().postFeedTitle("Post title 2").click();
+        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 2", TESTUSER_2_NAME);
         
         //Act
-        await pm.onPostPage().addComment(MAX_LENGTH_COMMENT)
+        await pm.onPostPage().addComment(MAX_LENGTH_COMMENT);
         
         //Assert
-        await expect(pm.onPostPage().firstCommentBody).toContainText(MAX_LENGTH_COMMENT)
-        await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 2 = ') 
+        await expect(pm.onPostPage().firstCommentBody).toContainText(MAX_LENGTH_COMMENT);
+        await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 2 = ');
     })
 
     test('edit own comment ', async ({ page }) => {
         //Arrange
         const pm = new PageManager(page);
         await pm.onFeedPage().postFeedTitle("Post title 4").click();
-        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME)
+        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME);
         
         //Act
-        await pm.onPostPage().editFirstComment(TEST_COMMENT2)
+        await pm.onPostPage().editFirstComment(TEST_COMMENT2);
         
         //Assert
-        await expect(pm.onPostPage().firstCommentBody).toContainText(TEST_COMMENT2)
-        await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 1 = ')
+        await expect(pm.onPostPage().firstCommentBody).toContainText(TEST_COMMENT2);
+        await expect(pm.onPostPage().postCommentCounter).toHaveText('= Думки 1 = ');
     });
 
     test('delete own comment under own post', async ({ page }) => {
         //Arrange
         const pm = new PageManager(page);
         await pm.onFeedPage().postFeedTitle("Post title 4").click();
-        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME)
+        await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME);
         
         //Act
-        await pm.onPostPage().deleteFirstComment()
+        await pm.onPostPage().deleteFirstComment();
         
         //Assert
         await expect(pm.onPostPage().firstCommentBody).toHaveCount(0);
@@ -113,7 +113,7 @@ test.describe('Anonymous user tests', () => {
     const pm = new PageManager(page);
     await page.goto('/');
     await pm.onFeedPage().postFeedTitle('Post title 4').click();
-    await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME)
+    await pm.onPostPage().verifyCorrectPostIsOpened("Post title 4", TESTUSER_1_NAME);
     
     //Act
     await pm.onPostPage().addComment(TEST_COMMENT1);

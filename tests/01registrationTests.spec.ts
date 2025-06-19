@@ -9,17 +9,16 @@ test.beforeEach(async({page})=>{
     //Arrange: Ensure we're on register page while being logged out 
     if (await page.getByRole('button', { name: "Поділитися" }).isVisible()) {
         await page.goto('/accounts/logout');
-        await page.goto('/accounts/register')
+        await page.goto('/accounts/register');
     }
     else {
         await page.goto('/accounts/register');
     }
 })
 
-
 test('valid registration', async ({page})=>{
     //Arrange: prepare page + test data
-    const pm = new PageManager(page)
+    const pm = new PageManager(page);
     const validUserName = faker.person.firstName();
     const validUserPassword = faker.internet.password();
 
@@ -34,7 +33,7 @@ test('valid registration', async ({page})=>{
 
 test('short password registration', async ({page})=>{
     // Arrange: Prepare registration page and short password
-    const pm = new PageManager(page)
+    const pm = new PageManager(page);
     const validUserName = faker.person.firstName();
 
     // Act: Try to register with short password
@@ -47,7 +46,7 @@ test('short password registration', async ({page})=>{
 
 test('too known password registration', async({page})=>{
     // Arrange: Prepare registration page and too common password
-    const pm = new PageManager(page)
+    const pm = new PageManager(page);
     const validUserName = faker.person.firstName();
     const knownPassword = 'abcdefghij';
 
@@ -60,7 +59,7 @@ test('too known password registration', async({page})=>{
 
 test('password from integers only registration', async ({page})=>{
     // Arrange: Prepare registration page and all-numeric password
-    const pm = new PageManager(page)
+    const pm = new PageManager(page);
     const validUserName = faker.person.firstName();
     const integersPassword = "00223344551177";
 
@@ -73,7 +72,7 @@ test('password from integers only registration', async ({page})=>{
 
 test('passwords do not match registration', async({page})=>{
     // Arrange: Prepare registration page and two different passwords
-    const pm = new PageManager(page)
+    const pm = new PageManager(page);
     const validUserName = faker.person.firstName();
     const validPassword1 = faker.internet.password();
     const validPassword2 = faker.internet.password();
@@ -87,7 +86,7 @@ test('passwords do not match registration', async({page})=>{
 
 test('existing username registration', async({page})=>{
     // Arrange: Prepare registration page and a username that already exists
-    const pm = new PageManager(page)
+    const pm = new PageManager(page);
     const validPassword = faker.internet.password();
 
     // Act: Try to register with an existing username

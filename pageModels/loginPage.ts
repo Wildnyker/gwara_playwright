@@ -32,18 +32,18 @@ export class LoginPage{
         await this.usernameLoginField.fill(TESTUSER_1_NAME);
         await this.passwordLoginField.fill(VALID_TEST_PASS);
         await this.loginButton.click();
-        await this.page.waitForTimeout(3000)
+        await this.page.waitForTimeout(3000);
         await this.page.context().storageState({ path: authFile1 });
 
     }
 
     async saveAuthStatesForTestUser2(){
-        const pm = new PageManager(this.page)
+        const pm = new PageManager(this.page);
         await this.page.goto("/accounts/login/");
         await this.usernameLoginField.fill(TESTUSER_2_NAME);
         await this.passwordLoginField.fill(VALID_TEST_PASS);
         await this.loginButton.click();
-        await this.page.waitForTimeout(3000)
+        await this.page.waitForTimeout(3000);
         await this.page.context().storageState({ path: authFile2 });
     }
 

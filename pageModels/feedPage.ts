@@ -4,7 +4,7 @@ import { urlToHttpOptions } from 'url';
 
 export class FeedPage{
     readonly page: Page;
-    readonly openPostFormButton:Locator
+    readonly openPostFormButton:Locator;
     readonly titleField: Locator;
     readonly imageField:Locator;
     readonly postTextField: Locator;
@@ -16,7 +16,7 @@ export class FeedPage{
 
 
     constructor(page:Page){
-        this.page = page
+        this.page = page;
         this.titleField = this.page.getByRole('textbox', { name: 'Чим хочеш поділитися?' });
         this.imageField = this.page.getByPlaceholder('URL зображення');
         this.postTextField = this.page.locator('#new-entry-text');
@@ -28,7 +28,7 @@ export class FeedPage{
     }
 
     async addPost(title?:string, imageLink?:string, postText?:string){
-        this.openPostFormButton.click()
+        this.openPostFormButton.click();
 
         if(title){
             await this.titleField.fill(title);

@@ -1,4 +1,4 @@
-import {test, expect} from '@playwright/test'
+import {test, expect} from '@playwright/test';
 import { PageManager } from '../pageModels/pageManager';
 import { TESTUSER_1_NAME, VALID_TEST_PASS, INVALID_SHORT_TEST_PASS } from './test data/testData';
 
@@ -9,7 +9,7 @@ test.beforeEach(async({page})=>{
     // Arrange: Ensure we're on the login page and logged out
     if (await page.getByRole('button', { name: "Поділитися" }).isVisible()) {
         await page.goto('/accounts/logout');
-        await page.goto('/accounts/login/')
+        await page.goto('/accounts/login/');
     }
     else {
         await page.goto('/accounts/login/');
@@ -55,8 +55,8 @@ test('invalid username login', async({page})=>{
     await pm.onLoginPage().fillTheFieldsAndLogIn('Ta', VALID_TEST_PASS);
 
     // Assert: Should remain on the login page and show error message
-    await expect(page, "Stayed on login page").toHaveURL('/accounts/login/')
-    await expect(pm.onLoginPage().errorMessage).toHaveText('Йой, помилка в імені або паролі.')
+    await expect(page, "Stayed on login page").toHaveURL('/accounts/login/');
+    await expect(pm.onLoginPage().errorMessage).toHaveText('Йой, помилка в імені або паролі.');
 })
 
 test('no username & password', async({page})=>{
