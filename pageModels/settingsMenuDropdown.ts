@@ -21,4 +21,9 @@ export class SettingMenuDropdown {
         await this.settingsMenuButton.click();
         await this.editProfleLink.click();
     }
+
+    async logout(){
+        await this.settingsMenuButton.click()
+        await this.logoutLink.click()
+    }
 }
